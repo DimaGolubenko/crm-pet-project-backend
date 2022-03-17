@@ -1,0 +1,25 @@
+{
+  "name": "crm-pet-project-backend",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Dima Golubenko <dimagolubenko@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "dev": "cross-env NODE_ENV=development nodemon --watch './**/*.ts' --exec ts-node ./src/server.ts",
+    "start": "cross-env NODE_ENV=production ts-node ./src/server.ts"
+  },
+  "dependencies": {
+    "body-parser": "^1.19.2",
+    "express": "^4.17.3",
+    "ts-node": "^10.7.0",
+    "typescript": "^4.6.2"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.13",
+    "@types/node": "^17.0.21",
+    "cross-env": "^7.0.3",
+    "dotenv": "^16.0.0",
+    "mongoose": "^6.2.7",
+    "nodemon": "^2.0.15"
+  }
+}
