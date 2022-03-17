@@ -6,7 +6,8 @@ dotenv.config({
 });
 
 import { App } from "./app";
+import { CategoryController } from "./modules/categories/category.controller";
 
-const app = new App([]);
+const app = new App([new CategoryController()]);
 
 app.listen();
