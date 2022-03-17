@@ -5,6 +5,7 @@ import * as mongoose from "mongoose";
 
 // Others
 import { ControllerInterface } from "controller.interface";
+import { errorMiddleware } from "middlewares/error.middleware";
 
 export class App {
   public app: express.Application;
@@ -16,10 +17,15 @@ export class App {
     this.connectToTheDatabase();
     this.initializeMiddlewares();
     this.initializeControllers(controllers);
+    this.initializeErrorHandling();
   }
 
   private initializeMiddlewares() {
     this.app.use(bodyParser.json());
+  }
+
+  private initializeErrorHandling() {
+    this.app.use(errorMiddleware);
   }
 
   private initializeControllers(controllers: ControllerInterface[]) {
