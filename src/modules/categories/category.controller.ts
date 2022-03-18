@@ -3,6 +3,7 @@ import * as express from "express";
 import { categoryModel } from "./category.model";
 import { ControllerInterface } from "controller.interface";
 import { CategoryInterface } from "./category.interface";
+import { HttpException } from "../../exceptions/HttpException";
 
 export class CategoryController implements ControllerInterface {
   public path = "/categories";
@@ -30,18 +31,18 @@ export class CategoryController implements ControllerInterface {
 
   private async getCategoryById(
     request: express.Request,
-    response: express.Response
+    response: express.Response,
+    next: express.NextFunction
   ) {
     const categoryId = request.params.id;
     const successResponse = await categoryModel.findById(categoryId);
-    if (!successResponse) {
-      return response.status(404).json({
-        error: true,
-        message: `Category with id ${categoryId} not found`,
-      });
+    if (successResponse) {
+      response.json({ data: successResponse });
+    } else {
+      next(
+        new HttpException(404, `Category with id "${categoryId}" not found`)
+      );
     }
-
-    return response.json({ data: successResponse });
   }
 
   private async createCategory(
@@ -55,7 +56,8 @@ export class CategoryController implements ControllerInterface {
 
   private async updateCategory(
     request: express.Request,
-    response: express.Response
+    response: express.Response,
+    next: express.NextFunction
   ) {
     const categoryId = request.params.id;
     const categoryData: CategoryInterface = request.body;
@@ -67,26 +69,25 @@ export class CategoryController implements ControllerInterface {
     if (updatedCategory) {
       response.json({ data: updatedCategory });
     } else {
-      response.status(404).json({
-        error: true,
-        message: `Category with id "${categoryId} not found"`,
-      });
+      next(
+        new HttpException(404, `Category with id "${categoryId}" not found`)
+      );
     }
   }
 
   private async deleteCategory(
     request: express.Request,
-    response: express.Response
+    response: express.Response,
+    next: express.NextFunction
   ) {
     const categoryId = request.params.id;
     const successResponse = await categoryModel.findByIdAndDelete(categoryId);
     if (successResponse) {
       response.send(204);
     } else {
-      response.send(404).json({
-        error: true,
-        message: `Category with id "${categoryId} not found"`,
-      });
+      next(
+        new HttpException(404, `Category with id "${categoryId}" not found`)
+      );
     }
   }
 }
