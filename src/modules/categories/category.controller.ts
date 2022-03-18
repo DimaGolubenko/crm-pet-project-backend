@@ -3,7 +3,7 @@ import * as express from "express";
 import { categoryModel } from "./category.model";
 import { ControllerInterface } from "controller.interface";
 import { CategoryInterface } from "./category.interface";
-import { HttpException } from "../../exceptions/HttpException";
+import { CategoryNotFoundException } from "../../exceptions/CategoryNotFoundException";
 
 export class CategoryController implements ControllerInterface {
   public path = "/categories";
@@ -39,9 +39,7 @@ export class CategoryController implements ControllerInterface {
     if (successResponse) {
       response.json({ data: successResponse });
     } else {
-      next(
-        new HttpException(404, `Category with id "${categoryId}" not found`)
-      );
+      next(new CategoryNotFoundException(categoryId));
     }
   }
 
@@ -69,9 +67,7 @@ export class CategoryController implements ControllerInterface {
     if (updatedCategory) {
       response.json({ data: updatedCategory });
     } else {
-      next(
-        new HttpException(404, `Category with id "${categoryId}" not found`)
-      );
+      next(new CategoryNotFoundException(categoryId));
     }
   }
 
@@ -85,9 +81,7 @@ export class CategoryController implements ControllerInterface {
     if (successResponse) {
       response.send(204);
     } else {
-      next(
-        new HttpException(404, `Category with id "${categoryId}" not found`)
-      );
+      next(new CategoryNotFoundException(categoryId));
     }
   }
 }
