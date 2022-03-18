@@ -4,6 +4,9 @@ import { categoryModel } from "./category.model";
 import { ControllerInterface } from "controller.interface";
 import { CategoryInterface } from "./category.interface";
 import { HttpException } from "../../exceptions/HttpException";
+import { validationMiddleware } from "../../middlewares/validation.middleware";
+import { CreateCategoryDto } from "./dtos/create-category.dto";
+import { UpdateCategoryDto } from "./dtos/update-category.dto";
 
 export class CategoryController implements ControllerInterface {
   public path = "/categories";
@@ -16,8 +19,16 @@ export class CategoryController implements ControllerInterface {
   private initilizeRoutes() {
     this.router.get(this.path, this.getAllCategories);
     this.router.get(`${this.path}/:id`, this.getCategoryById);
-    this.router.put(`${this.path}/:id`, this.updateCategory);
-    this.router.post(this.path, this.createCategory);
+    this.router.put(
+      `${this.path}/:id`,
+      validationMiddleware(UpdateCategoryDto),
+      this.updateCategory
+    );
+    this.router.post(
+      this.path,
+      validationMiddleware(CreateCategoryDto),
+      this.createCategory
+    );
     this.router.delete(`${this.path}/:id`, this.deleteCategory);
   }
 
