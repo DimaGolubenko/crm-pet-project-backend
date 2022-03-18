@@ -4,8 +4,8 @@ import * as bodyParser from "body-parser";
 import * as mongoose from "mongoose";
 
 // Others
-import { ControllerInterface } from "controller.interface";
-import { errorMiddleware } from "middlewares/error.middleware";
+import { ControllerInterface } from "./controller.interface";
+import { errorMiddleware } from "./middlewares/error.middleware";
 
 export class App {
   public app: express.Application;
